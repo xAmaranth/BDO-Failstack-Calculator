@@ -8,4 +8,4 @@ Enhancing cheaply is achieved by failing enhancements that are cheap to attempt 
 more expensive. Since the price point of enhancing materials vary from day-to-day thanks to the active in game economy, and since failstacks are lost entirely if an
 enhancement is successful, it is difficult for a player to gauge exactly how to failstack well or optimally.
 
-The application is built entirely using Java, with the GUI bulit using Swing.
+The application is built entirely using Java, with the GUI built using Swing.
