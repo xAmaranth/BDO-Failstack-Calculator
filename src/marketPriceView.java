@@ -7,7 +7,7 @@ public class marketPriceView extends JPanel {
         setBackground(Color.DARK_GRAY);
 
         setSize(608, 375);
-        add(new JLabel(new ImageIcon("blackStoneArmor.png")));
+        add(new MarketPriceWidget(new ImageIcon("blackStoneArmor.png"), "Black Stone (Armor)", 200000L));
 
     }
 
