@@ -14,7 +14,6 @@ public class MarketPriceWidget extends JPanel {
     public MarketPriceWidget(Icon icon, String name, Long value) {
         super(new GridBagLayout());
         setBackground(Color.DARK_GRAY);
-        setSize(180, 60);
 
         imageConstraints = new GridBagConstraints();
         labelConstraints = new GridBagConstraints();
