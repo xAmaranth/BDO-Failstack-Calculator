@@ -37,7 +37,7 @@ public class MainFrame {
         mainView.setLayout(new CardLayout());
 
         NavBarView navBarView = new NavBarView();
-        navBarView.setSize(59, 375);
+        navBarView.setPreferredSize(new Dimension(59, 375));
 
         navBarView.addNavBarButton(new NavBarButton(
                 new ImageIcon("marketplaceDark.png"),
@@ -54,8 +54,8 @@ public class MainFrame {
             )
         );
 
-        staticFrame.add(navBarView);
-        staticFrame.add(mainView);
+        staticFrame.add(navBarView, BorderLayout.LINE_START);
+        staticFrame.add(mainView, BorderLayout.CENTER);
     }
 
     private void showFrame() {
