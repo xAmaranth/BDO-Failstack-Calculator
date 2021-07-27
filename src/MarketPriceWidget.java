@@ -45,6 +45,8 @@ public class MarketPriceWidget extends JPanel {
         labelConstraints.gridwidth = 2;
         labelConstraints.gridheight = 1;
 
+        labelConstraints.weightx = 1.0;
+
         JLabel itemName = new JLabel(name);
         itemName.setForeground(Color.ORANGE);
         add(itemName, labelConstraints);
@@ -56,6 +58,8 @@ public class MarketPriceWidget extends JPanel {
 
         textBoxConstraints.gridwidth = 2;
         textBoxConstraints.gridheight = 1;
+
+        textBoxConstraints.weightx = 1.0;
 
         textBoxConstraints.fill = GridBagConstraints.HORIZONTAL;
 
