@@ -32,7 +32,7 @@ public class MarketPriceWidget extends JPanel {
         imageConstraints.gridwidth = 1;
         imageConstraints.gridheight = 2;
 
-        imageConstraints.ipadx = 5;
+        imageConstraints.ipadx = 8;
 
         JLabel itemImage = new JLabel(icon);
         add(itemImage, imageConstraints);
