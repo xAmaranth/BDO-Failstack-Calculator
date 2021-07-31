@@ -3,64 +3,67 @@ import java.awt.*;
 
 public class EnhancementSelectionWidget extends JPanel {
 
-    private final GridBagConstraints imageConstraints;
-    private final GridBagConstraints categoryConstraints;
-    private final GridBagConstraints levelConstraints;
+    private final GridBagConstraints promptConstraint;
+    private final GridBagConstraints selectionConstraint;
+    private final GridBagConstraints buttonConstraint;
 
-    public EnhancementSelectionWidget(Icon icon, String category, String enhancementLevel) {
+    public EnhancementSelectionWidget(
+            String textPrompt,
+            EnhancementCategoryWidget[] enhancementCategoryWidgets,
+            String buttonPrompt
+    ) {
         super(new GridBagLayout());
-
         setBackground(Color.DARK_GRAY);
 
-        imageConstraints = new GridBagConstraints();
-        categoryConstraints = new GridBagConstraints();
-        levelConstraints = new GridBagConstraints();
+        promptConstraint = new GridBagConstraints();
+        selectionConstraint = new GridBagConstraints();
+        buttonConstraint = new GridBagConstraints();
 
-        placeImage(icon);
-        placeCategory(category);
-        placeLevel(enhancementLevel);
+        placeText(textPrompt);
+        placeCategories(enhancementCategoryWidgets);
+        placeButton(buttonPrompt);
     }
 
-    private void placeImage(Icon icon) {
-        imageConstraints.gridx = 0;
-        imageConstraints.gridy = 0;
+    private void placeText(String textPrompt) {
+        promptConstraint.gridx = 0;
+        promptConstraint.gridy = 0;
 
-        imageConstraints.gridwidth = 1;
-        imageConstraints.gridheight = 2;
+        promptConstraint.gridwidth = 1;
+        promptConstraint.gridheight = 1;
 
-        imageConstraints.ipadx = 8;
+        promptConstraint.ipady = 6;
 
-        JLabel categoryImage = new JLabel(icon);
-        add(categoryImage, imageConstraints);
+        JLabel prompt = new JLabel(textPrompt);
+        prompt.setForeground(Color.ORANGE);
+        add(prompt, promptConstraint);
     }
 
-    private void placeCategory(String category) {
-        categoryConstraints.gridx = 1;
-        categoryConstraints.gridy = 0;
+    private void placeCategories(EnhancementCategoryWidget[] enhancementCategoryWidgets) {
+        selectionConstraint.gridx = 0;
+        selectionConstraint.gridy = 1;
 
-        categoryConstraints.gridwidth = 1;
-        categoryConstraints.gridheight = 1;
+        selectionConstraint.gridwidth = 1;
+        selectionConstraint.gridheight = 1;
 
-        categoryConstraints.weightx = 1.0;
+        selectionConstraint.ipadx = 8;
 
-        JLabel categoryName = new JLabel(category);
-        categoryName.setForeground(Color.ORANGE);
-        add(categoryName, categoryConstraints);
+        JComboBox<EnhancementCategoryWidget> selectionBox = new JComboBox<>(enhancementCategoryWidgets);
+        selectionBox.setRenderer(new CategorySelectionRenderer());
+        selectionBox.setBackground(Color.DARK_GRAY);
+        selectionBox.setFocusable(false);
+        add(selectionBox, selectionConstraint);
     }
 
-    private void placeLevel(String enhancementLevel) {
-       levelConstraints.gridx = 1;
-       levelConstraints.gridy = 1;
+    private void placeButton(String buttonPrompt) {
+        buttonConstraint.gridx = 1;
+        buttonConstraint.gridy = 0;
 
-       levelConstraints.gridwidth = 1;
-       levelConstraints.gridheight = 1;
+        buttonConstraint.gridwidth = 1;
+        buttonConstraint.gridheight = 2;
 
-       levelConstraints.weightx = 1.0;
+        buttonConstraint.fill = GridBagConstraints.BOTH;
 
-       levelConstraints.anchor = GridBagConstraints.LINE_START;
-
-       JLabel level = new JLabel(enhancementLevel);
-       level.setForeground(Color.ORANGE);
-       add(level, levelConstraints);
+        JButton confirmButton = new JButton(buttonPrompt);
+        add(confirmButton, buttonConstraint);
     }
 }
