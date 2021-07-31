@@ -8,7 +8,7 @@ public class enhancementView extends JPanel {
         setBackground(Color.DARK_GRAY);
 
         setSize(608, 375);
-        add(new JLabel(new ImageIcon("concentratedWeapon.png")));
+        add(new EnhancementSelectionWidget(new ImageIcon("penWeapon.png"), "Boss Weapon", "PEN (V)"));
     }
 
     @Override
