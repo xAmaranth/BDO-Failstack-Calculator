@@ -11,7 +11,7 @@ public class FailstackView extends JPanel {
         add(new FailstackInputWidget(
                 new ImageIcon("adviceOfValks.png"),
                 "Desired Failstack: ",
-                "Calculate Value!"
+                "Calculate Value"
         ), BorderLayout.PAGE_START);
 
         add(new CostBreakdownView(), BorderLayout.CENTER);
