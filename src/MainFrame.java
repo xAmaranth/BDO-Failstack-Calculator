@@ -47,6 +47,12 @@ public class MainFrame {
             )
         );
         navBarView.addNavBarButton(new NavBarButton(
+                new ImageIcon("adviceOfValksDark.png"),
+                new ImageIcon("sealedAdviceOfValks.png"),
+                new FailstackView(),
+                this
+        ));
+        navBarView.addNavBarButton(new NavBarButton(
                 new ImageIcon("enhancementDark.png"),
                 new ImageIcon("enhancementBright.png"),
                 new enhancementView(),
