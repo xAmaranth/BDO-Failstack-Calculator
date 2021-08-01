@@ -73,7 +73,7 @@ public class CostBreakdownWidget extends JPanel {
         if (attemptsMade.equals(1)){
             attempts.setText("Attempt Once");
         } else {
-            attempts.setText("Attempt " + attemptsMade.toString() + " Times");
+            attempts.setText("Attempt " + attemptsMade + " Times");
         }
         attempts.setForeground(Color.ORANGE);
 

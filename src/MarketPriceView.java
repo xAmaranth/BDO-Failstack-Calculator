@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class marketPriceView extends JPanel {
+public class MarketPriceView extends JPanel {
 
-    public marketPriceView() {
+    public MarketPriceView() {
         super(new GridLayout(6, 2, 10, 8));
         setBackground(Color.DARK_GRAY);
         setSize(608, 375);
