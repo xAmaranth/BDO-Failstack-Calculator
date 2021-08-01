@@ -1,9 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class enhancementView extends JPanel {
+public class EnhancementView extends JPanel {
 
-    public enhancementView() {
+    public EnhancementView() {
         super(new BorderLayout());
         setBackground(Color.DARK_GRAY);
 

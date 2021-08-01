@@ -21,9 +21,6 @@ public class MainFrame {
         showFrame();
     }
 
-    /**
-     * Creates a new frame, and sets its title and size.
-     */
     private void createFrame() {
         staticFrame = new JFrame("BDO Failstack Calculator");
         staticFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -42,23 +39,21 @@ public class MainFrame {
         navBarView.addNavBarButton(new NavBarButton(
                 new ImageIcon("marketplaceDark.png"),
                 new ImageIcon("marketplaceBright.png"),
-                new marketPriceView(),
+                new MarketPriceView(),
                 this
-            )
-        );
+            ));
         navBarView.addNavBarButton(new NavBarButton(
                 new ImageIcon("adviceOfValksDark.png"),
                 new ImageIcon("sealedAdviceOfValks.png"),
                 new FailstackView(),
                 this
-        ));
+            ));
         navBarView.addNavBarButton(new NavBarButton(
                 new ImageIcon("enhancementDark.png"),
                 new ImageIcon("enhancementBright.png"),
-                new enhancementView(),
+                new EnhancementView(),
                 this
-            )
-        );
+            ));
 
         staticFrame.add(navBarView, BorderLayout.LINE_START);
         staticFrame.add(mainView, BorderLayout.CENTER);
@@ -72,4 +67,5 @@ public class MainFrame {
     public static void main(String[] args) {
         new MainFrame();
     }
+
 }
