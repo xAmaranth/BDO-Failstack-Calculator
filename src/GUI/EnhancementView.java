@@ -1,3 +1,5 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -64,7 +66,7 @@ public class EnhancementView extends JPanel {
         );
 
         EnhancementSelectionWidget enhancementSelectionWidget = new EnhancementSelectionWidget(
-                "Desired Item: ",
+                "Desired Model.Item: ",
                 enhancementCategoryWidgets,
                 "Calculate Cost"
         );

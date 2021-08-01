@@ -1,3 +1,5 @@
+package GUI;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -20,7 +22,7 @@ public class MarketPriceView extends JPanel {
         add(new MarketPriceWidget(new ImageIcon("concentratedWeapon.png"), "Concentrated Black Stone (Weapon)", 3000000L));
         add(new MarketPriceWidget(new ImageIcon("memoryFragment.png"), "Memory Fragment", 2350000L));
         add(new MarketPriceWidget(new ImageIcon("accessory.png"), "Accessory to Enhance, If Applicable", 40000000L));
-        add(new MarketPriceWidget(new ImageIcon("reblaith.png"), "Reblaith Gloves", 12900L));
+        add(new MarketPriceWidget(new ImageIcon("reblaith.png"), "Model.Reblaith Gloves", 12900L));
         add(new MarketPriceWidget(new ImageIcon("cronStone.png"), "Cron Stones", 1000000L));
     }
 
