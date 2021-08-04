@@ -1,5 +1,7 @@
 package GUI;
 
+import Model.*;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,16 +16,17 @@ public class MarketPriceView extends JPanel {
     }
 
     private void addMarketPriceWidgets() {
-        add(new MarketPriceWidget(new ImageIcon("blackStoneArmor.png"), "Black Stone (Armor)", 200000L));
-        add(new MarketPriceWidget(new ImageIcon("blackStoneWeapon.png"), "Black Stone (Weapon)", 230000L));
-        add(new MarketPriceWidget(new ImageIcon("hardCrystal.png"), "Hard Black Crystal Shard", 1600000L));
-        add(new MarketPriceWidget(new ImageIcon("sharpCrystal.png"), "Sharp Black Crystal Shard", 2000000L));
-        add(new MarketPriceWidget(new ImageIcon("concentratedArmor.png"), "Concentrated Black Stone (Armor)", 2000000L));
-        add(new MarketPriceWidget(new ImageIcon("concentratedWeapon.png"), "Concentrated Black Stone (Weapon)", 3000000L));
-        add(new MarketPriceWidget(new ImageIcon("memoryFragment.png"), "Memory Fragment", 2350000L));
-        add(new MarketPriceWidget(new ImageIcon("accessory.png"), "Accessory to Enhance, If Applicable", 40000000L));
-        add(new MarketPriceWidget(new ImageIcon("reblaith.png"), "Model.Reblaith Gloves", 12900L));
-        add(new MarketPriceWidget(new ImageIcon("cronStone.png"), "Cron Stones", 1000000L));
+        //TODO: convert all of these into items.
+        add(new MarketPriceWidget(new BlackStoneArmor()));
+        add(new MarketPriceWidget(new BlackStoneWeapon()));
+        add(new MarketPriceWidget(new HardCrystalShard()));
+        add(new MarketPriceWidget(new SharpCrystalShard()));
+        add(new MarketPriceWidget(new ConcentratedArmor()));
+        add(new MarketPriceWidget(new ConcentratedWeapon()));
+        add(new MarketPriceWidget(new MemoryFragment()));
+        add(new MarketPriceWidget(new Accessory()));
+        add(new MarketPriceWidget(new Reblaith()));
+        add(new MarketPriceWidget(new CronStone()));
     }
 
     @Override

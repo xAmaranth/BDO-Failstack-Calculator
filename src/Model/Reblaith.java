@@ -6,6 +6,7 @@ public class Reblaith extends Item{
 
     public Reblaith() {
         image = new ImageIcon("reblaith.png");
-        name = "Model.Reblaith Gloves";
+        name = "Reblaith Gloves";
+        value = 12900L;
     }
 }
