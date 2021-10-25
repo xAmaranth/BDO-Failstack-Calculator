@@ -18,7 +18,7 @@ public class FailstackButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
         FailstackCalculator failstackCalculator = new FailstackCalculator(desiredFailstack);
-        long failstackValue = failstackCalculator.CalculateFailstackValue();
+        long failstackValue = failstackCalculator.calculateFailstackValue();
         //TODO: connect the results of the failstack calculator back to the FailstackView
     }
 }

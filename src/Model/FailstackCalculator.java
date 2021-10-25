@@ -9,7 +9,7 @@ public class FailstackCalculator {
     }
 
     //TODO: implement me.
-    public long CalculateFailstackValue(){
+    public long calculateFailstackValue(){
         return targetFailstack;
     }
 
