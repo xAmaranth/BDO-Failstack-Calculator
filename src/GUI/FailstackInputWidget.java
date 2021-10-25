@@ -1,5 +1,7 @@
 package GUI;
 
+import Controller.FailstackButtonListener;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,6 +16,8 @@ public class FailstackInputWidget extends JPanel {
     private final GridBagConstraints textBoxConstraints;
     private final GridBagConstraints buttonConstraints;
 
+    private final JTextField failstackTextField;
+
     public FailstackInputWidget(Icon icon, String textPrompt, String buttonLabel) {
         super(new GridBagLayout());
         setBackground(Color.DARK_GRAY);
@@ -25,7 +29,7 @@ public class FailstackInputWidget extends JPanel {
 
         placeIcon(icon);
         placeLabel(textPrompt);
-        placeTextBox();
+        failstackTextField = placeTextBox();
         placeButton(buttonLabel);
     }
 
@@ -56,7 +60,7 @@ public class FailstackInputWidget extends JPanel {
         add(prompt, labelConstraints);
     }
 
-    private void placeTextBox() {
+    private JTextField placeTextBox() {
         textBoxConstraints.gridx = 1;
         textBoxConstraints.gridy = 1;
 
@@ -69,6 +73,8 @@ public class FailstackInputWidget extends JPanel {
 
         JTextField inputField = new JTextField();
         add(inputField, textBoxConstraints);
+
+        return inputField;
     }
 
     private void placeButton(String buttonLabel) {
@@ -82,6 +88,8 @@ public class FailstackInputWidget extends JPanel {
 
         JButton confirmButton = new JButton(buttonLabel);
         add(confirmButton, buttonConstraints);
+
+        confirmButton.addActionListener(new FailstackButtonListener(failstackTextField));
     }
 
 }
