@@ -1,6 +1,6 @@
 package GUI;
 
-import Model.Item;
+import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.*;

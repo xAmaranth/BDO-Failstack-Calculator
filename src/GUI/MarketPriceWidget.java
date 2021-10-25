@@ -1,7 +1,7 @@
 package GUI;
 
 import Controller.MarketPriceListener;
-import Model.Item;
+import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +9,9 @@ import java.awt.*;
 /**
  * MarketPriceWidgets consist of an image to identify an item, a text label with the item's name, and a modifiable
  * text field displaying the item's value, in silver.
+ *
+ * It's important for the MarketPriceWidget (in the MarketPriceView) to be the sole place to adjust the market prices
+ * of items in order to avoid issues with the CostTracker.
  */
 public class MarketPriceWidget extends JPanel {
 

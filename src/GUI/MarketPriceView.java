@@ -1,6 +1,6 @@
 package GUI;
 
-import Model.*;
+import Model.Items.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,7 +16,6 @@ public class MarketPriceView extends JPanel {
     }
 
     private void addMarketPriceWidgets() {
-        //TODO: convert all of these into items.
         add(new MarketPriceWidget(new BlackStoneArmor()));
         add(new MarketPriceWidget(new BlackStoneWeapon()));
         add(new MarketPriceWidget(new HardCrystalShard()));

@@ -1,6 +1,7 @@
 package Controller;
 
-import Model.Item;
+import Model.CostTracker;
+import Model.Items.Item;
 
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -12,6 +13,7 @@ public class MarketPriceListener implements DocumentListener {
 
     public MarketPriceListener(Item itemOnDisplay) {
         this.itemOnDisplay = itemOnDisplay;
+        CostTracker.addItem(itemOnDisplay);
     }
 
     @Override
@@ -39,6 +41,8 @@ public class MarketPriceListener implements DocumentListener {
             e.printStackTrace();
         }
 
+        // We don't have to call CostTracker.addItem(itemOnDisplay) because the CostTracker isn't updated
+        // anywhere else in the application.
         if (text != null && !text.equals("")){
             itemOnDisplay.setValue(Long.parseLong(text));
         }

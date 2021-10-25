@@ -66,7 +66,7 @@ public class EnhancementView extends JPanel {
         );
 
         EnhancementSelectionWidget enhancementSelectionWidget = new EnhancementSelectionWidget(
-                "Desired Model.Items.Item: ",
+                "Desired Item: ",
                 enhancementCategoryWidgets,
                 "Calculate Cost"
         );

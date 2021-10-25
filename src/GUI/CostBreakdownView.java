@@ -1,6 +1,6 @@
 package GUI;
 
-import Model.Reblaith;
+import Model.Items.Reblaith;
 
 import javax.swing.*;
 import java.awt.*;
