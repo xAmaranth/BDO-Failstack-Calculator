@@ -9,9 +9,11 @@ import java.awt.event.ActionListener;
 public class FailstackButtonListener implements ActionListener {
 
     private final JTextField failstackTextField;
+    private final JLabel outputLabel;
 
-    public FailstackButtonListener(JTextField failstackTextField) {
+    public FailstackButtonListener(JTextField failstackTextField, JLabel outputLabel) {
         this.failstackTextField = failstackTextField;
+        this.outputLabel = outputLabel;
     }
 
     @Override
@@ -19,6 +21,8 @@ public class FailstackButtonListener implements ActionListener {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
         FailstackCalculator failstackCalculator = new FailstackCalculator(desiredFailstack);
         long failstackValue = failstackCalculator.calculateFailstackValue();
-        //TODO: connect the results of the failstack calculator back to the FailstackView
+
+        this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
+        //TODO: improve the output to also display how to failstack the way the calculator does.
     }
 }
