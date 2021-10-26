@@ -95,7 +95,7 @@ public class CostBreakdownWidget extends JPanel {
 
         costConstraints.anchor = GridBagConstraints.WEST;
 
-        JLabel totalCost = new JLabel("Cost: " + cost.toString());
+        JLabel totalCost = new JLabel("Cost: " + String.format("%,d", cost));
         totalCost.setForeground(Color.ORANGE);
 
         add(totalCost, costConstraints);
