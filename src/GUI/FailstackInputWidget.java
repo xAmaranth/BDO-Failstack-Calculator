@@ -1,3 +1,7 @@
+package GUI;
+
+import Controller.FailstackButtonListener;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -12,7 +16,15 @@ public class FailstackInputWidget extends JPanel {
     private final GridBagConstraints textBoxConstraints;
     private final GridBagConstraints buttonConstraints;
 
-    public FailstackInputWidget(Icon icon, String textPrompt, String buttonLabel) {
+    private final JTextField failstackTextField;
+
+    public FailstackInputWidget(
+            Icon icon,
+            String textPrompt,
+            String buttonLabel,
+            JLabel outputLabel,
+            CostBreakdownView costBreakdownView
+    ) {
         super(new GridBagLayout());
         setBackground(Color.DARK_GRAY);
 
@@ -23,8 +35,8 @@ public class FailstackInputWidget extends JPanel {
 
         placeIcon(icon);
         placeLabel(textPrompt);
-        placeTextBox();
-        placeButton(buttonLabel);
+        failstackTextField = placeTextBox();
+        placeButton(buttonLabel, outputLabel, costBreakdownView);
     }
 
     private void placeIcon(Icon icon) {
@@ -54,7 +66,7 @@ public class FailstackInputWidget extends JPanel {
         add(prompt, labelConstraints);
     }
 
-    private void placeTextBox() {
+    private JTextField placeTextBox() {
         textBoxConstraints.gridx = 1;
         textBoxConstraints.gridy = 1;
 
@@ -67,9 +79,11 @@ public class FailstackInputWidget extends JPanel {
 
         JTextField inputField = new JTextField();
         add(inputField, textBoxConstraints);
+
+        return inputField;
     }
 
-    private void placeButton(String buttonLabel) {
+    private void placeButton(String buttonLabel, JLabel outputLabel, CostBreakdownView costBreakdownView) {
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 0;
 
@@ -80,6 +94,8 @@ public class FailstackInputWidget extends JPanel {
 
         JButton confirmButton = new JButton(buttonLabel);
         add(confirmButton, buttonConstraints);
+
+        confirmButton.addActionListener(new FailstackButtonListener(failstackTextField, outputLabel, costBreakdownView));
     }
 
 }
