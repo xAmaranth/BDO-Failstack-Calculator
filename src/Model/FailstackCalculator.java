@@ -8,12 +8,14 @@ public class FailstackCalculator {
         this.targetFailstack = targetFailstack;
     }
 
-    public long calculateFailstackValue(){
+    public long[] calculateFailstackValue(){
         long blackStoneCost = CostTracker.getCost("Black Stone (Armor)");
         long reblaithCost = CostTracker.getCost("Reblaith Gloves");
 
         int currentFailstack = 0;
         double currentValue = 0;
+        double totalClicks = 0;
+
         while (currentFailstack < targetFailstack){
             double chanceOfSuccess = SuccessRateCalculator.getReblaithRate(currentFailstack);
             double chanceOfFail = 1 - chanceOfSuccess;
@@ -25,10 +27,14 @@ public class FailstackCalculator {
             double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
 
             currentValue += totalCost;
+            // Increment totalClicks by 1 instead of by expectedNumberOfClicks because we already account for
+            // the cost of succeeding enhancements (and losing the value of the failstacks) in the cost calculations.
+            totalClicks++;
             currentFailstack++;
         }
 
-        return Math.round(currentValue);
+        // TODO: make this output generalizable to not-Reblaith failstacking methods.
+        return new long[] {Math.round(currentValue), Math.round(totalClicks)};
     }
 
 }

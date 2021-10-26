@@ -1,14 +1,14 @@
 package GUI;
 
-import Model.Items.Reblaith;
+import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class CostBreakdownView extends JPanel {
 
-    // TODO: Implement this class when implementing the algorithm that calculates cost. Currently a placeholder.
-
+    private final ArrayList<CostBreakdownWidget> currentWidgets;
 
     public CostBreakdownView() {
         super();
@@ -19,7 +19,22 @@ public class CostBreakdownView extends JPanel {
 
         setBackground(Color.DARK_GRAY);
 
-        add(new CostBreakdownWidget(new Reblaith(), 4, 3000000L));
+        currentWidgets = new ArrayList<>();
+    }
+
+    public void addCostBreakdownWidget(Item itemUsed, int attemptsMade, long cost){
+        CostBreakdownWidget newWidget = new CostBreakdownWidget(itemUsed, attemptsMade, cost);
+        currentWidgets.add(newWidget);
+
+        add(newWidget);
+    }
+
+    public void clearCostBreakdownWidgets(){
+        for (CostBreakdownWidget costBreakdownWidget : currentWidgets) {
+            remove(costBreakdownWidget);
+        }
+
+        currentWidgets.clear();
     }
 
 }

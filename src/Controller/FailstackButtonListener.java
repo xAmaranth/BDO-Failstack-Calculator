@@ -1,6 +1,8 @@
 package Controller;
 
+import GUI.CostBreakdownView;
 import Model.FailstackCalculator;
+import Model.Items.Reblaith;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -10,19 +12,32 @@ public class FailstackButtonListener implements ActionListener {
 
     private final JTextField failstackTextField;
     private final JLabel outputLabel;
+    private final CostBreakdownView costBreakdownView;
 
-    public FailstackButtonListener(JTextField failstackTextField, JLabel outputLabel) {
+    public FailstackButtonListener(
+            JTextField failstackTextField,
+            JLabel outputLabel,
+            CostBreakdownView costBreakdownView
+    ) {
         this.failstackTextField = failstackTextField;
         this.outputLabel = outputLabel;
+        this.costBreakdownView = costBreakdownView;
     }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
         FailstackCalculator failstackCalculator = new FailstackCalculator(desiredFailstack);
-        long failstackValue = failstackCalculator.calculateFailstackValue();
+        long[] calculatorOutput = failstackCalculator.calculateFailstackValue();
+
+        long failstackValue = calculatorOutput[0];
+        int reblaithClicks = Math.toIntExact(calculatorOutput[1]);
+
+        costBreakdownView.clearCostBreakdownWidgets();
+        costBreakdownView.addCostBreakdownWidget(new Reblaith(), reblaithClicks, failstackValue);
+        //TODO: improve the output to also display how to failstack the way the calculator does.
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
-        //TODO: improve the output to also display how to failstack the way the calculator does.
     }
+
 }

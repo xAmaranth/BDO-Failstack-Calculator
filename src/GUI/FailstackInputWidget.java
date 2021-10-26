@@ -18,7 +18,13 @@ public class FailstackInputWidget extends JPanel {
 
     private final JTextField failstackTextField;
 
-    public FailstackInputWidget(Icon icon, String textPrompt, String buttonLabel, JLabel outputLabel) {
+    public FailstackInputWidget(
+            Icon icon,
+            String textPrompt,
+            String buttonLabel,
+            JLabel outputLabel,
+            CostBreakdownView costBreakdownView
+    ) {
         super(new GridBagLayout());
         setBackground(Color.DARK_GRAY);
 
@@ -30,7 +36,7 @@ public class FailstackInputWidget extends JPanel {
         placeIcon(icon);
         placeLabel(textPrompt);
         failstackTextField = placeTextBox();
-        placeButton(buttonLabel, outputLabel);
+        placeButton(buttonLabel, outputLabel, costBreakdownView);
     }
 
     private void placeIcon(Icon icon) {
@@ -77,7 +83,7 @@ public class FailstackInputWidget extends JPanel {
         return inputField;
     }
 
-    private void placeButton(String buttonLabel, JLabel outputLabel) {
+    private void placeButton(String buttonLabel, JLabel outputLabel, CostBreakdownView costBreakdownView) {
         buttonConstraints.gridx = 2;
         buttonConstraints.gridy = 0;
 
@@ -89,7 +95,7 @@ public class FailstackInputWidget extends JPanel {
         JButton confirmButton = new JButton(buttonLabel);
         add(confirmButton, buttonConstraints);
 
-        confirmButton.addActionListener(new FailstackButtonListener(failstackTextField, outputLabel));
+        confirmButton.addActionListener(new FailstackButtonListener(failstackTextField, outputLabel, costBreakdownView));
     }
 
 }

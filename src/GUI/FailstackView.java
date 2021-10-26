@@ -12,14 +12,17 @@ public class FailstackView extends JPanel {
 
         JLabel outputLabel = addOutputLabel();
 
+        CostBreakdownView costBreakdownView = new CostBreakdownView();
+        add(costBreakdownView, BorderLayout.CENTER);
+
         add(new FailstackInputWidget(
                 new ImageIcon("adviceOfValks.png"),
                 "Desired Failstack: ",
                 "Calculate Value",
-                outputLabel
+                outputLabel,
+                costBreakdownView
         ), BorderLayout.PAGE_START);
 
-        add(new CostBreakdownView(), BorderLayout.CENTER);
 
     }
 
