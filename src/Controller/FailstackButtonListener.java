@@ -35,7 +35,6 @@ public class FailstackButtonListener implements ActionListener {
 
         costBreakdownView.clearCostBreakdownWidgets();
         costBreakdownView.addCostBreakdownWidget(new Reblaith(), reblaithClicks, failstackValue);
-        //TODO: improve the output to also display how to failstack the way the calculator does.
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
     }
