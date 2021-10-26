@@ -1,38 +1,63 @@
 package Model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
 public class FailstackCalculator {
 
     private final int targetFailstack;
+    private final HashMap<Integer, Long> lowestCost;
+
+    private ArrayList<Integer> finalRoute;
+    private long finalCost;
 
     public FailstackCalculator(int targetFailstack) {
         this.targetFailstack = targetFailstack;
+        lowestCost = new HashMap<>();
     }
 
-    public long[] calculateFailstackValue(){
-        long blackStoneCost = CostTracker.getCost("Black Stone (Armor)");
-        long reblaithCost = CostTracker.getCost("Reblaith Gloves");
+    public ArrayList<Integer> getFinalRoute() {
+        return finalRoute;
+    }
 
-        int currentFailstack = 0;
-        double currentValue = 0;
-        long totalClicks = 0;
+    public long getFinalCost() {
+        return finalCost;
+    }
 
-        while (currentFailstack < targetFailstack){
-            double chanceOfSuccess = SuccessRateCalculator.getReblaithRate(currentFailstack);
-            double chanceOfFail = 1 - chanceOfSuccess;
-            double expectedNumberOfClicks = 1 / chanceOfFail;
+    public void calculateFailstackValue(){
+        FailstackRoute failstackZero = new FailstackRoute();
 
-            double costOfFail = blackStoneCost + reblaithCost / 2.0;
-            double costOfSuccess = blackStoneCost + 100000 + currentValue;
+        ArrayList<FailstackRoute> frontier = new ArrayList<>();
+        frontier.add(failstackZero);
 
-            double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
+        while (!frontier.isEmpty()){
+           FailstackRoute currentFailstackRoute = frontier.remove(0);
 
-            currentValue += totalCost;
-            totalClicks++;
-            currentFailstack++;
+           int currentFailstack = currentFailstackRoute.getCurrentFailstack();
+           long currentValue = currentFailstackRoute.getValue();
+
+            if (currentFailstack >= targetFailstack){
+                finalRoute = currentFailstackRoute.getRoute();
+                finalCost = currentValue;
+                break;
+            }
+
+           if (!lowestCost.containsKey(currentFailstack)){
+               lowestCost.put(currentFailstack, currentValue);
+           } else {
+               if (currentValue >= lowestCost.get(currentFailstack)){
+                   continue;
+               } else {
+                   lowestCost.replace(currentFailstack, currentValue);
+               }
+           }
+
+           ArrayList<FailstackRoute> newFailstackRoutes = currentFailstackRoute.iterate();
+           frontier.addAll(newFailstackRoutes);
+           Collections.sort(frontier);
         }
 
-        // TODO: make this output generalizable to not-Reblaith failstacking methods.
-        return new long[] {Math.round(currentValue), totalClicks};
     }
 
 }

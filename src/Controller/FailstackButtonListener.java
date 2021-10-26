@@ -7,6 +7,8 @@ import Model.Items.Reblaith;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FailstackButtonListener implements ActionListener {
 
@@ -28,13 +30,14 @@ public class FailstackButtonListener implements ActionListener {
     public void actionPerformed(ActionEvent actionEvent) {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
         FailstackCalculator failstackCalculator = new FailstackCalculator(desiredFailstack);
-        long[] calculatorOutput = failstackCalculator.calculateFailstackValue();
 
-        long failstackValue = calculatorOutput[0];
-        int reblaithClicks = Math.toIntExact(calculatorOutput[1]);
+        failstackCalculator.calculateFailstackValue();
+
+        long failstackValue = failstackCalculator.getFinalCost();
+        ArrayList<Integer> finalRoute = failstackCalculator.getFinalRoute();
 
         costBreakdownView.clearCostBreakdownWidgets();
-        costBreakdownView.addCostBreakdownWidget(new Reblaith(), reblaithClicks, failstackValue);
+        costBreakdownView.addCostBreakdownWidget(new Reblaith(), Collections.frequency(finalRoute, 1), failstackValue);
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
     }
