@@ -1,12 +1,15 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FailstackRoute implements Comparable<FailstackRoute>{
 
-    private final ArrayList<Integer> route;
+    private final ArrayList<List<Long>> route;
     private long value;
     private int currentFailstack;
+
     private long blackStoneCost;
     private long concentratedBlackStoneCost;
     private long reblaithCost;
@@ -21,7 +24,8 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
     public FailstackRoute(FailstackRoute currentFailstackRoute) {
         value = currentFailstackRoute.getValue();
         currentFailstack = currentFailstackRoute.getCurrentFailstack();
-        route = currentFailstackRoute.getRoute();
+        route = new ArrayList<>();
+        route.addAll(currentFailstackRoute.getRoute());
 
         getCosts();
     }
@@ -42,12 +46,12 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
         this.currentFailstack = currentFailstack;
     }
 
-    public ArrayList<Integer> getRoute() {
+    public ArrayList<List<Long>> getRoute() {
         return route;
     }
 
-    public void addToRoute(Integer newClick){
-        route.add(newClick);
+    public void addToRoute(Long newClick, Long currentValue){
+        route.add(Arrays.asList(newClick, currentValue));
     }
 
     private void getCosts(){
@@ -60,6 +64,7 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
         ArrayList<FailstackRoute> next = new ArrayList<>();
 
         next.add(clickReblaith14());
+        next.add(clickPriReblaith());
 
         return next;
     }
@@ -78,9 +83,28 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
 
         reblaithRoute.setValue(value + Math.round(totalCost));
         reblaithRoute.setCurrentFailstack(currentFailstack + 1);
-        reblaithRoute.addToRoute(1);
+        reblaithRoute.addToRoute(1L, Math.round(totalCost));
 
         return reblaithRoute;
+    }
+
+    private FailstackRoute clickPriReblaith() {
+        FailstackRoute priReblaithRoute = new FailstackRoute(this);
+
+        double chanceOfSuccess = SuccessRateCalculator.getPriToDuoRate(currentFailstack);
+        double chanceOfFail = 1 - chanceOfSuccess;
+        double expectedNumberOfClicks = 1 / chanceOfFail;
+
+        double costOfFail = concentratedBlackStoneCost + reblaithCost;
+        double costOfSuccess = concentratedBlackStoneCost + value;
+
+        double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
+
+        priReblaithRoute.setValue(value + Math.round(totalCost));
+        priReblaithRoute.setCurrentFailstack(currentFailstack + 2);
+        priReblaithRoute.addToRoute(2L, Math.round(totalCost));
+
+        return priReblaithRoute;
     }
 
     @Override

@@ -35,6 +35,9 @@ public class CostBreakdownView extends JPanel {
         }
 
         currentWidgets.clear();
+
+        revalidate();
+        repaint();
     }
 
 }

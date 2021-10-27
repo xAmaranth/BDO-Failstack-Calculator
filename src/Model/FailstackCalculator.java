@@ -3,13 +3,14 @@ package Model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 public class FailstackCalculator {
 
     private final int targetFailstack;
     private final HashMap<Integer, Long> lowestCost;
 
-    private ArrayList<Integer> finalRoute;
+    private ArrayList<List<Long>> finalRoute;
     private long finalCost;
 
     public FailstackCalculator(int targetFailstack) {
@@ -17,7 +18,7 @@ public class FailstackCalculator {
         lowestCost = new HashMap<>();
     }
 
-    public ArrayList<Integer> getFinalRoute() {
+    public ArrayList<List<Long>> getFinalRoute() {
         return finalRoute;
     }
 
