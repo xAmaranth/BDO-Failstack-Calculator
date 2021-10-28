@@ -1,9 +1,6 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class FailstackCalculator {
 
@@ -19,7 +16,28 @@ public class FailstackCalculator {
     }
 
     public ArrayList<List<Long>> getFinalRoute() {
-        return finalRoute;
+        ArrayList<List<Long>> parsedRoute = new ArrayList<>();
+
+        long currentMethod = finalRoute.get(0).get(0);
+        long numberOfSteps = 0;
+        long costOfSteps = 0;
+
+        for (List<Long> step : finalRoute){
+            if (step.get(0) == currentMethod){
+                numberOfSteps++;
+                costOfSteps += step.get(1);
+            } else {
+                parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
+
+                currentMethod = step.get(0);
+                numberOfSteps = 1;
+                costOfSteps = step.get(1);
+            }
+        }
+
+        parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
+
+        return parsedRoute;
     }
 
     public long getFinalCost() {
