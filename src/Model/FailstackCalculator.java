@@ -1,38 +1,82 @@
 package Model;
 
+import java.util.*;
+
 public class FailstackCalculator {
 
     private final int targetFailstack;
+    private final HashMap<Integer, Long> lowestCost;
+
+    private ArrayList<List<Long>> finalRoute;
+    private long finalCost;
 
     public FailstackCalculator(int targetFailstack) {
         this.targetFailstack = targetFailstack;
+        lowestCost = new HashMap<>();
     }
 
-    public long[] calculateFailstackValue(){
-        long blackStoneCost = CostTracker.getCost("Black Stone (Armor)");
-        long reblaithCost = CostTracker.getCost("Reblaith Gloves");
+    public ArrayList<List<Long>> getFinalRoute() {
+        ArrayList<List<Long>> parsedRoute = new ArrayList<>();
 
-        int currentFailstack = 0;
-        double currentValue = 0;
-        long totalClicks = 0;
+        long currentMethod = finalRoute.get(0).get(0);
+        long numberOfSteps = 0;
+        long costOfSteps = 0;
 
-        while (currentFailstack < targetFailstack){
-            double chanceOfSuccess = SuccessRateCalculator.getReblaithRate(currentFailstack);
-            double chanceOfFail = 1 - chanceOfSuccess;
-            double expectedNumberOfClicks = 1 / chanceOfFail;
+        for (List<Long> step : finalRoute){
+            if (step.get(0) == currentMethod){
+                numberOfSteps++;
+                costOfSteps += step.get(1);
+            } else {
+                parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
 
-            double costOfFail = blackStoneCost + reblaithCost / 2.0;
-            double costOfSuccess = blackStoneCost + 100000 + currentValue;
-
-            double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
-
-            currentValue += totalCost;
-            totalClicks++;
-            currentFailstack++;
+                currentMethod = step.get(0);
+                numberOfSteps = 1;
+                costOfSteps = step.get(1);
+            }
         }
 
-        // TODO: make this output generalizable to not-Reblaith failstacking methods.
-        return new long[] {Math.round(currentValue), totalClicks};
+        parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
+
+        return parsedRoute;
+    }
+
+    public long getFinalCost() {
+        return finalCost;
+    }
+
+    public void calculateFailstackValue(){
+        FailstackRoute failstackZero = new FailstackRoute();
+
+        ArrayList<FailstackRoute> frontier = new ArrayList<>();
+        frontier.add(failstackZero);
+
+        while (!frontier.isEmpty()){
+           FailstackRoute currentFailstackRoute = frontier.remove(0);
+
+           int currentFailstack = currentFailstackRoute.getCurrentFailstack();
+           long currentValue = currentFailstackRoute.getValue();
+
+            if (currentFailstack >= targetFailstack){
+                finalRoute = currentFailstackRoute.getRoute();
+                finalCost = currentValue;
+                break;
+            }
+
+           if (!lowestCost.containsKey(currentFailstack)){
+               lowestCost.put(currentFailstack, currentValue);
+           } else {
+               if (currentValue >= lowestCost.get(currentFailstack)){
+                   continue;
+               } else {
+                   lowestCost.replace(currentFailstack, currentValue);
+               }
+           }
+
+           ArrayList<FailstackRoute> newFailstackRoutes = currentFailstackRoute.iterate();
+           frontier.addAll(newFailstackRoutes);
+           Collections.sort(frontier);
+        }
+
     }
 
 }

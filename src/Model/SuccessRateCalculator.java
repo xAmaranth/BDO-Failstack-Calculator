@@ -10,4 +10,12 @@ public class SuccessRateCalculator {
     public static double getReblaithRate(int currentFailstack){
         return 0.02 + (currentFailstack * 0.002);
     }
+
+    public static double getPriToDuoRate(int currentFailstack) {
+        if (currentFailstack > 82){
+            return 0.7075 + ((currentFailstack - 82) * 0.00155);
+        } else {
+            return 0.0769 + (currentFailstack * 0.0077);
+        }
+    }
 }
