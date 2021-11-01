@@ -7,8 +7,28 @@ import java.util.List;
 public class FailstackRoute implements Comparable<FailstackRoute>{
 
     private final ArrayList<List<Long>> route;
+    public ArrayList<List<Long>> getRoute() {
+        return route;
+    }
+    public void addToRoute(Long newClick, Long currentValue){
+        route.add(Arrays.asList(newClick, currentValue));
+    }
+
     private long value;
+    public long getValue() {
+        return value;
+    }
+    public void setValue(long value) {
+        this.value = value;
+    }
+
     private int currentFailstack;
+    public int getCurrentFailstack() {
+        return currentFailstack;
+    }
+    public void setCurrentFailstack(int currentFailstack) {
+        this.currentFailstack = currentFailstack;
+    }
 
     private long blackStoneCost;
     private long concentratedBlackStoneCost;
@@ -28,30 +48,6 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
         route.addAll(currentFailstackRoute.getRoute());
 
         getCosts();
-    }
-
-    public long getValue() {
-        return value;
-    }
-
-    public void setValue(long value) {
-        this.value = value;
-    }
-
-    public int getCurrentFailstack() {
-        return currentFailstack;
-    }
-
-    public void setCurrentFailstack(int currentFailstack) {
-        this.currentFailstack = currentFailstack;
-    }
-
-    public ArrayList<List<Long>> getRoute() {
-        return route;
-    }
-
-    public void addToRoute(Long newClick, Long currentValue){
-        route.add(Arrays.asList(newClick, currentValue));
     }
 
     private void getCosts(){
