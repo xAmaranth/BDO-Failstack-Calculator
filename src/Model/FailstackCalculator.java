@@ -45,10 +45,8 @@ public class FailstackCalculator {
     }
 
     public void calculateFailstackValue(){
-        FailstackRoute failstackZero = new FailstackRoute();
-
         ArrayList<FailstackRoute> frontier = new ArrayList<>();
-        frontier.add(failstackZero);
+        frontier.add(new FailstackRoute());
 
         while (!frontier.isEmpty()){
            FailstackRoute currentFailstackRoute = frontier.remove(0);
