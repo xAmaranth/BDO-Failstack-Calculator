@@ -40,7 +40,7 @@ public class FailstackButtonListener implements ActionListener {
 
         for (List<Long> step : finalRoute){
             costBreakdownView.addCostBreakdownWidget(
-                    new Reblaith(Math.toIntExact(step.get(0)), 12700),
+                    new Reblaith(),
                     Math.toIntExact(step.get(1)),
                     step.get(2));
         }

@@ -1,8 +1,15 @@
 package Model;
 
+import Model.Items.PriReblaith;
+import Model.Items.Reblaith14;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+//TODO: refactor this class to divide up its multiple responsibilities.
+// Move the failstack implementation to the Failstack class.
+// Move the clicking implementation to their respective Item classes.
 
 public class FailstackRoute implements Comparable<FailstackRoute>{
 
@@ -30,30 +37,16 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
         this.currentFailstack = currentFailstack;
     }
 
-    private long blackStoneCost;
-    private long concentratedBlackStoneCost;
-    private long reblaithCost;
-
     public FailstackRoute() {
         value = 0;
         currentFailstack = 0;
         route = new ArrayList<>();
-
-        getCosts();
     }
     public FailstackRoute(FailstackRoute currentFailstackRoute) {
         value = currentFailstackRoute.getValue();
         currentFailstack = currentFailstackRoute.getCurrentFailstack();
         route = new ArrayList<>();
         route.addAll(currentFailstackRoute.getRoute());
-
-        getCosts();
-    }
-
-    private void getCosts(){
-        blackStoneCost = CostTracker.getCost("Black Stone (Armor)");
-        concentratedBlackStoneCost = CostTracker.getCost("Concentrated Black Stone (Armor)");
-        reblaithCost = CostTracker.getCost("Reblaith Gloves");
     }
 
     public ArrayList<FailstackRoute> iterate(){
@@ -68,14 +61,7 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
     private FailstackRoute clickReblaith14() {
         FailstackRoute reblaithRoute = new FailstackRoute(this);
 
-        double chanceOfSuccess = SuccessRateCalculator.getReblaithRate(currentFailstack);
-        double chanceOfFail = 1 - chanceOfSuccess;
-        double expectedNumberOfClicks = 1 / chanceOfFail;
-
-        double costOfFail = blackStoneCost + reblaithCost / 2.0;
-        double costOfSuccess = blackStoneCost + 100000 + value;
-
-        double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
+        double totalCost = Reblaith14.CostToClick(new Failstack(currentFailstack, value));
 
         reblaithRoute.setValue(value + Math.round(totalCost));
         reblaithRoute.setCurrentFailstack(currentFailstack + 1);
@@ -91,10 +77,7 @@ public class FailstackRoute implements Comparable<FailstackRoute>{
         double chanceOfFail = 1 - chanceOfSuccess;
         double expectedNumberOfClicks = 1 / chanceOfFail;
 
-        double costOfFail = concentratedBlackStoneCost + reblaithCost;
-        double costOfSuccess = concentratedBlackStoneCost + value;
-
-        double totalCost = expectedNumberOfClicks * (costOfFail * chanceOfFail + costOfSuccess * chanceOfSuccess);
+        double totalCost = expectedNumberOfClicks * PriReblaith.CostToClick(new Failstack(currentFailstack, value));
 
         priReblaithRoute.setValue(value + Math.round(totalCost));
         priReblaithRoute.setCurrentFailstack(currentFailstack + 2);
