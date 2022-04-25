@@ -24,7 +24,7 @@ public class PriReblaith extends Item{
      * @param currentFailstack  The Failstack used to click the PRI Reblaith Gloves.
      * @return                  The cost to click the PRI Reblaith Gloves given a Failstack
      */
-    public static Long CostToClick(Failstack currentFailstack){
+    public static Long costToClick(Failstack currentFailstack){
         long concentratedBlackStoneCost = CostTracker.getCost("Concentrated Black Stone (Armor)");
         long reblaithCost = CostTracker.getCost("Reblaith Gloves");
 

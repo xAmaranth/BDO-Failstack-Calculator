@@ -1,16 +1,16 @@
 package Model;
 
+import Model.Items.DuoReblaith;
 import Model.Items.PriReblaith;
 import Model.Items.Reblaith14;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 
 public class FailstackCalculator {
 
     private final int targetFailstack;
-    private final HashMap<Integer, Long> lowestCost;
+    private final LowestCostHash lowestCost;
 
     private EnhancementRoute finalRoute;
     public EnhancementRoute getFinalRoute() {
@@ -24,7 +24,7 @@ public class FailstackCalculator {
 
     public FailstackCalculator(int targetFailstack) {
         this.targetFailstack = targetFailstack;
-        lowestCost = new HashMap<>();
+        lowestCost = new LowestCostHash();
     }
 
     public void calculateFailstackValue(){
@@ -42,14 +42,8 @@ public class FailstackCalculator {
                 break;
             }
 
-           if (!lowestCost.containsKey(currentFailstack.getFailstack())){
-               lowestCost.put(currentFailstack.getFailstack(), currentFailstack.getValue());
-           } else {
-               if (currentFailstack.getValue() >= lowestCost.get(currentFailstack.getFailstack())){
-                   continue;
-               } else {
-                   lowestCost.replace(currentFailstack.getFailstack(), currentFailstack.getValue());
-               }
+           if (!lowestCost.isCheapest(currentFailstack)) {
+               continue;
            }
 
            ArrayList<EnhancementRoute> newFailstackRoutes = iterate(currentEnhancementRoute);
@@ -64,6 +58,7 @@ public class FailstackCalculator {
 
         newEnhancementRoutes.add(clickReblaith14(currentEnhancementRoute));
         newEnhancementRoutes.add(clickPriReblaith(currentEnhancementRoute));
+        newEnhancementRoutes.add(clickDuoReblaith(currentEnhancementRoute));
 
         return newEnhancementRoutes;
     }
@@ -73,8 +68,8 @@ public class FailstackCalculator {
 
         double totalCost = Reblaith14.CostToClick(currentEnhancementRoute.getFailstack());
 
-        reblaith14Route.AddToRoute(
-                new Failstack(currentEnhancementRoute.getFailstack()).Increment(1, Math.round(totalCost)),
+        reblaith14Route.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(1, Math.round(totalCost)),
                 new Reblaith14()
         );
 
@@ -86,14 +81,29 @@ public class FailstackCalculator {
 
         double chanceOfSuccess = SuccessRateCalculator.getPriToDuoRate(currentEnhancementRoute.getFailstack().getFailstack());
         double expectedNumberOfClicks = 1 / (1 - chanceOfSuccess);
-        double totalCost = expectedNumberOfClicks * PriReblaith.CostToClick(currentEnhancementRoute.getFailstack());
+        double totalCost = expectedNumberOfClicks * PriReblaith.costToClick(currentEnhancementRoute.getFailstack());
 
-        priReblaithRoute.AddToRoute(
-                new Failstack(currentEnhancementRoute.getFailstack()).Increment(2, Math.round(totalCost)),
+        priReblaithRoute.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(2, Math.round(totalCost)),
                 new PriReblaith()
         );
 
         return priReblaithRoute;
+    }
+
+    private EnhancementRoute clickDuoReblaith(EnhancementRoute currentEnhancementRoute) {
+        EnhancementRoute duoReblaithRoute = new EnhancementRoute(currentEnhancementRoute);
+
+        double chanceOfSuccess = SuccessRateCalculator.getDuoToTriRate(currentEnhancementRoute.getFailstack().getFailstack());
+        double expectedNumberOfClicks = 1 / (1 - chanceOfSuccess);
+        double totalCost = expectedNumberOfClicks * DuoReblaith.costToClick(currentEnhancementRoute.getFailstack());
+
+        duoReblaithRoute.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(3, Math.round(totalCost)),
+                new DuoReblaith()
+        );
+
+        return duoReblaithRoute;
     }
 
 }

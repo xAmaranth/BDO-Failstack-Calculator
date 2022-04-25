@@ -9,6 +9,7 @@ public class EnhancementRoute implements Comparable<EnhancementRoute> {
     private final ArrayList<Item> itemRoute;
     private final ArrayList<Failstack> failstackRoute;
     private Failstack failstack;
+
     public EnhancementRoute() {
         failstack = new Failstack();
         itemRoute = new ArrayList<>();
@@ -33,7 +34,7 @@ public class EnhancementRoute implements Comparable<EnhancementRoute> {
         return failstackRoute;
     }
 
-    public void AddToRoute(Failstack newFailstack, Item itemUsed){
+    public void addToRoute(Failstack newFailstack, Item itemUsed) {
         failstackRoute.add(this.failstack);
         itemRoute.add(itemUsed);
 

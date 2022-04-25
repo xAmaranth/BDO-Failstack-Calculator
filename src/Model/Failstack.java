@@ -36,7 +36,7 @@ public class Failstack {
         this.value = value;
     }
 
-    public Failstack Increment(int failstackIncrement, long additionalValue){
+    public Failstack increment(int failstackIncrement, long additionalValue){
         failstack = failstack + failstackIncrement;
         value = value + additionalValue;
 
