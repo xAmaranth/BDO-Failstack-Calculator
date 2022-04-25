@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//TODO: refactor this class to divide up its multiple responsibilities.
-// Move the failstack implementation to the Failstack class.
-// Move the clicking implementation to their respective Item classes.
+// This class is obsolete, and remains only for reference.
 
 public class FailstackRoute implements Comparable<FailstackRoute>{
 

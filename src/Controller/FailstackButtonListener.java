@@ -1,14 +1,13 @@
 package Controller;
 
 import GUI.CostBreakdownView;
+import Model.EnhancementRoute;
 import Model.FailstackCalculator;
-import Model.Items.Reblaith;
+import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FailstackButtonListener implements ActionListener {
 
@@ -26,6 +25,7 @@ public class FailstackButtonListener implements ActionListener {
         this.costBreakdownView = costBreakdownView;
     }
 
+    //TODO: some of the information displayed isn't particularly useful (adjust the CostBreakdownWidget)
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
@@ -34,15 +34,26 @@ public class FailstackButtonListener implements ActionListener {
         failstackCalculator.calculateFailstackValue();
 
         long failstackValue = failstackCalculator.getFinalCost();
-        ArrayList<List<Long>> finalRoute = failstackCalculator.getFinalRoute();
+        EnhancementRoute finalRoute = failstackCalculator.getFinalRoute();
 
         costBreakdownView.clearCostBreakdownWidgets();
 
-        for (List<Long> step : finalRoute){
-            costBreakdownView.addCostBreakdownWidget(
-                    new Reblaith(),
-                    Math.toIntExact(step.get(1)),
-                    step.get(2));
+        for (int i = 0; i < finalRoute.getItemRoute().size(); i++){
+            Item itemUsed = finalRoute.getItemRoute().get(i);
+            int consecutiveUses = 1;
+            for (int j = i + 1; j < finalRoute.getItemRoute().size(); j++){
+                if (itemUsed.toString().equals(finalRoute.getItemRoute().get(j).toString())){
+                    consecutiveUses++;
+                    i++;
+                } else {
+                    i = j - 1;
+                    break;
+                }
+            }
+
+            costBreakdownView.addCostBreakdownWidget(finalRoute.getItemRoute().get(i),
+                    consecutiveUses,
+                    finalRoute.getFailstackRoute().get(i).getValue());
         }
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
