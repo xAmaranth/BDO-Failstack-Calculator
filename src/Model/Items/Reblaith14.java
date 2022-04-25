@@ -10,8 +10,7 @@ public class Reblaith14 extends Item {
 
     public Reblaith14() {
         name = "+14 Reblaith Gloves";
-        // TODO: get a proper image for the +14 Reblaith
-        image = new ImageIcon("reblaith.png");
+        image = new ImageIcon("14Reblaith.png");
         value = 0L;
     }
 

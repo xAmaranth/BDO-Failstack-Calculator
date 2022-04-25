@@ -10,7 +10,7 @@ public class PriReblaith extends Item{
 
     public PriReblaith() {
         image = new ImageIcon("priReblaith.png");
-        name = "Reblaith Gloves";
+        name = "PRI Reblaith Gloves";
         value = 0L;
     }
 
