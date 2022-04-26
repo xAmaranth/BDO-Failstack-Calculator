@@ -1,14 +1,13 @@
 package Controller;
 
 import GUI.CostBreakdownView;
+import Model.EnhancementRoute;
 import Model.FailstackCalculator;
-import Model.Items.Reblaith;
+import Model.Items.Item;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class FailstackButtonListener implements ActionListener {
 
@@ -34,15 +33,29 @@ public class FailstackButtonListener implements ActionListener {
         failstackCalculator.calculateFailstackValue();
 
         long failstackValue = failstackCalculator.getFinalCost();
-        ArrayList<List<Long>> finalRoute = failstackCalculator.getFinalRoute();
+        EnhancementRoute finalRoute = failstackCalculator.getFinalRoute();
 
         costBreakdownView.clearCostBreakdownWidgets();
 
-        for (List<Long> step : finalRoute){
-            costBreakdownView.addCostBreakdownWidget(
-                    new Reblaith(Math.toIntExact(step.get(0)), 12700),
-                    Math.toIntExact(step.get(1)),
-                    step.get(2));
+        for (int i = 0; i < finalRoute.getItemRoute().size(); i++) {
+            Item itemUsed = finalRoute.getItemRoute().get(i);
+            if (i > 0 && itemUsed.toString().equals(finalRoute.getItemRoute().get(i - 1).toString())) {
+                continue;
+            }
+
+            long stepCost = 0;
+            for (int j = i; j < finalRoute.getItemRoute().size(); j++) {
+                if (!itemUsed.toString().equals(finalRoute.getItemRoute().get(j).toString())) {
+                    stepCost = finalRoute.getFailstackRoute().get(j).getValue() - finalRoute.getFailstackRoute().get(i).getValue();
+                    break;
+                } else if (j + 1 == finalRoute.getItemRoute().size()) {
+                    stepCost = failstackValue - finalRoute.getFailstackRoute().get(i).getValue();
+                }
+            }
+
+            costBreakdownView.addCostBreakdownWidget(itemUsed,
+                    finalRoute.getFailstackRoute().get(i).getFailstack(),
+                    stepCost);
         }
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));

@@ -14,22 +14,22 @@ public class CostBreakdownWidget extends JPanel {
 
     private final GridBagConstraints imageConstraints;
     private final GridBagConstraints nameConstraints;
-    private final GridBagConstraints attemptsConstraints;
+    private final GridBagConstraints failstacksConstraint;
     private final GridBagConstraints costConstraints;
 
-    public CostBreakdownWidget(Item equipmentUsed, Integer attemptsMade, Long cost) {
+    public CostBreakdownWidget(Item equipmentUsed, Integer startingFailstack, Long cost) {
         super(new GridBagLayout());
         setBackground(Color.BLACK);
         setPreferredSize(new Dimension(275, 60));
 
         imageConstraints = new GridBagConstraints();
         nameConstraints = new GridBagConstraints();
-        attemptsConstraints = new GridBagConstraints();
+        failstacksConstraint = new GridBagConstraints();
         costConstraints = new GridBagConstraints();
 
         placeImage(equipmentUsed.getImage());
         placeName(equipmentUsed.getName());
-        placeAttempts(attemptsMade);
+        placeStartingFailstack(startingFailstack);
         placeCost(cost);
     }
 
@@ -62,26 +62,22 @@ public class CostBreakdownWidget extends JPanel {
         add(itemName, nameConstraints);
     }
 
-    private void placeAttempts(Integer attemptsMade) {
-        attemptsConstraints.gridx = 1;
-        attemptsConstraints.gridy = 1;
+    private void placeStartingFailstack(Integer startingFailstack) {
+        failstacksConstraint.gridx = 1;
+        failstacksConstraint.gridy = 1;
 
-        attemptsConstraints.gridwidth = 1;
-        attemptsConstraints.gridheight = 1;
+        failstacksConstraint.gridwidth = 1;
+        failstacksConstraint.gridheight = 1;
 
-        attemptsConstraints.ipady = 6;
+        failstacksConstraint.ipady = 6;
 
-        attemptsConstraints.anchor = GridBagConstraints.WEST;
+        failstacksConstraint.anchor = GridBagConstraints.WEST;
 
-        JLabel attempts = new JLabel();
-        if (attemptsMade.equals(1)){
-            attempts.setText("Attempt Once");
-        } else {
-            attempts.setText("Attempt " + attemptsMade + " Times");
-        }
-        attempts.setForeground(Color.ORANGE);
+        JLabel failstack = new JLabel();
+        failstack.setText("Starting from a " + startingFailstack + " failstack");
+        failstack.setForeground(Color.ORANGE);
 
-        add(attempts, attemptsConstraints);
+        add(failstack, failstacksConstraint);
     }
 
     private void placeCost(Long cost) {

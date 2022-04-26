@@ -22,8 +22,8 @@ public class CostBreakdownView extends JPanel {
         currentWidgets = new ArrayList<>();
     }
 
-    public void addCostBreakdownWidget(Item itemUsed, int attemptsMade, long cost){
-        CostBreakdownWidget newWidget = new CostBreakdownWidget(itemUsed, attemptsMade, cost);
+    public void addCostBreakdownWidget(Item itemUsed, int startingFailstack, long cost){
+        CostBreakdownWidget newWidget = new CostBreakdownWidget(itemUsed, startingFailstack, cost);
         currentWidgets.add(newWidget);
 
         add(newWidget);

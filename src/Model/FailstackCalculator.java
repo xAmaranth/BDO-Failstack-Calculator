@@ -1,82 +1,109 @@
 package Model;
 
-import java.util.*;
+import Model.Items.DuoReblaith;
+import Model.Items.PriReblaith;
+import Model.Items.Reblaith14;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class FailstackCalculator {
 
     private final int targetFailstack;
-    private final HashMap<Integer, Long> lowestCost;
+    private final LowestCostHash lowestCost;
 
-    private ArrayList<List<Long>> finalRoute;
+    private EnhancementRoute finalRoute;
+    public EnhancementRoute getFinalRoute() {
+        return finalRoute;
+    }
+
     private long finalCost;
-
-    public FailstackCalculator(int targetFailstack) {
-        this.targetFailstack = targetFailstack;
-        lowestCost = new HashMap<>();
-    }
-
-    public ArrayList<List<Long>> getFinalRoute() {
-        ArrayList<List<Long>> parsedRoute = new ArrayList<>();
-
-        long currentMethod = finalRoute.get(0).get(0);
-        long numberOfSteps = 0;
-        long costOfSteps = 0;
-
-        for (List<Long> step : finalRoute){
-            if (step.get(0) == currentMethod){
-                numberOfSteps++;
-                costOfSteps += step.get(1);
-            } else {
-                parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
-
-                currentMethod = step.get(0);
-                numberOfSteps = 1;
-                costOfSteps = step.get(1);
-            }
-        }
-
-        parsedRoute.add(Arrays.asList(currentMethod - 1, numberOfSteps, costOfSteps));
-
-        return parsedRoute;
-    }
-
     public long getFinalCost() {
         return finalCost;
     }
 
-    public void calculateFailstackValue(){
-        FailstackRoute failstackZero = new FailstackRoute();
+    public FailstackCalculator(int targetFailstack) {
+        this.targetFailstack = targetFailstack;
+        lowestCost = new LowestCostHash();
+    }
 
-        ArrayList<FailstackRoute> frontier = new ArrayList<>();
-        frontier.add(failstackZero);
+    public void calculateFailstackValue(){
+        ArrayList<EnhancementRoute> frontier = new ArrayList<>();
+        frontier.add(new EnhancementRoute());
 
         while (!frontier.isEmpty()){
-           FailstackRoute currentFailstackRoute = frontier.remove(0);
+           EnhancementRoute currentEnhancementRoute = frontier.remove(0);
 
-           int currentFailstack = currentFailstackRoute.getCurrentFailstack();
-           long currentValue = currentFailstackRoute.getValue();
+           Failstack currentFailstack = currentEnhancementRoute.getFailstack();
 
-            if (currentFailstack >= targetFailstack){
-                finalRoute = currentFailstackRoute.getRoute();
-                finalCost = currentValue;
+            if (currentFailstack.getFailstack() >= targetFailstack){
+                finalRoute = currentEnhancementRoute;
+                finalCost = currentFailstack.getValue();
                 break;
             }
 
-           if (!lowestCost.containsKey(currentFailstack)){
-               lowestCost.put(currentFailstack, currentValue);
-           } else {
-               if (currentValue >= lowestCost.get(currentFailstack)){
-                   continue;
-               } else {
-                   lowestCost.replace(currentFailstack, currentValue);
-               }
+           if (!lowestCost.isCheapest(currentFailstack)) {
+               continue;
            }
 
-           ArrayList<FailstackRoute> newFailstackRoutes = currentFailstackRoute.iterate();
+           ArrayList<EnhancementRoute> newFailstackRoutes = iterate(currentEnhancementRoute);
            frontier.addAll(newFailstackRoutes);
            Collections.sort(frontier);
         }
 
+    }
+
+    private ArrayList<EnhancementRoute> iterate(EnhancementRoute currentEnhancementRoute) {
+        ArrayList<EnhancementRoute> newEnhancementRoutes = new ArrayList<>();
+
+        newEnhancementRoutes.add(clickReblaith14(currentEnhancementRoute));
+        newEnhancementRoutes.add(clickPriReblaith(currentEnhancementRoute));
+        newEnhancementRoutes.add(clickDuoReblaith(currentEnhancementRoute));
+
+        return newEnhancementRoutes;
+    }
+
+    private EnhancementRoute clickReblaith14(EnhancementRoute currentEnhancementRoute) {
+        EnhancementRoute reblaith14Route = new EnhancementRoute(currentEnhancementRoute);
+
+        double totalCost = Reblaith14.CostToClick(currentEnhancementRoute.getFailstack());
+
+        reblaith14Route.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(1, Math.round(totalCost)),
+                new Reblaith14()
+        );
+
+        return reblaith14Route;
+    }
+
+    private EnhancementRoute clickPriReblaith(EnhancementRoute currentEnhancementRoute) {
+        EnhancementRoute priReblaithRoute = new EnhancementRoute(currentEnhancementRoute);
+
+        double chanceOfSuccess = SuccessRateCalculator.getPriToDuoRate(currentEnhancementRoute.getFailstack().getFailstack());
+        double expectedNumberOfClicks = 1 / (1 - chanceOfSuccess);
+        double totalCost = expectedNumberOfClicks * PriReblaith.costToClick(currentEnhancementRoute.getFailstack());
+
+        priReblaithRoute.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(2, Math.round(totalCost)),
+                new PriReblaith()
+        );
+
+        return priReblaithRoute;
+    }
+
+    private EnhancementRoute clickDuoReblaith(EnhancementRoute currentEnhancementRoute) {
+        EnhancementRoute duoReblaithRoute = new EnhancementRoute(currentEnhancementRoute);
+
+        double chanceOfSuccess = SuccessRateCalculator.getDuoToTriRate(currentEnhancementRoute.getFailstack().getFailstack());
+        double expectedNumberOfClicks = 1 / (1 - chanceOfSuccess);
+        double totalCost = expectedNumberOfClicks * DuoReblaith.costToClick(currentEnhancementRoute.getFailstack());
+
+        duoReblaithRoute.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(3, Math.round(totalCost)),
+                new DuoReblaith()
+        );
+
+        return duoReblaithRoute;
     }
 
 }
