@@ -61,7 +61,9 @@ public class DuoReblaith extends Item {
                 return currentRoute.getFailstack().getValue();
             }
 
-            //TODO: How can I prune the search tree to optimize the search?
+            if (!lowestCost.isCheapest(currentRoute.getFailstack(), currentRoute.getExpectedNumberOfReblaiths())) {
+                continue;
+            }
 
             ArrayList<ReblaithRoute> newReblaithRoutes = iterate(currentRoute);
             frontier.addAll(newReblaithRoutes);

@@ -52,7 +52,7 @@ public class FailstackButtonListener implements ActionListener {
                     stepCost = failstackValue - finalRoute.getFailstackRoute().get(i).getValue();
                 }
             }
-            
+
             costBreakdownView.addCostBreakdownWidget(itemUsed,
                     finalRoute.getFailstackRoute().get(i).getFailstack(),
                     stepCost);
