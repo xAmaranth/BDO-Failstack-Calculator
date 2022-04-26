@@ -25,7 +25,6 @@ public class FailstackButtonListener implements ActionListener {
         this.costBreakdownView = costBreakdownView;
     }
 
-    //TODO: some of the information displayed isn't particularly useful (adjust the CostBreakdownWidget)
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         int desiredFailstack = Integer.parseInt(failstackTextField.getText());
@@ -38,22 +37,25 @@ public class FailstackButtonListener implements ActionListener {
 
         costBreakdownView.clearCostBreakdownWidgets();
 
-        for (int i = 0; i < finalRoute.getItemRoute().size(); i++){
+        for (int i = 0; i < finalRoute.getItemRoute().size(); i++) {
             Item itemUsed = finalRoute.getItemRoute().get(i);
-            int consecutiveUses = 1;
-            for (int j = i + 1; j < finalRoute.getItemRoute().size(); j++){
-                if (itemUsed.toString().equals(finalRoute.getItemRoute().get(j).toString())){
-                    consecutiveUses++;
-                    i++;
-                } else {
-                    i = j - 1;
-                    break;
-                }
+            if (i > 0 && itemUsed.toString().equals(finalRoute.getItemRoute().get(i - 1).toString())) {
+                continue;
             }
 
-            costBreakdownView.addCostBreakdownWidget(finalRoute.getItemRoute().get(i),
-                    consecutiveUses,
-                    finalRoute.getFailstackRoute().get(i).getValue());
+            long stepCost = 0;
+            for (int j = i; j < finalRoute.getItemRoute().size(); j++) {
+                if (!itemUsed.toString().equals(finalRoute.getItemRoute().get(j).toString())) {
+                    stepCost = finalRoute.getFailstackRoute().get(j).getValue() - finalRoute.getFailstackRoute().get(i).getValue();
+                    break;
+                } else if (j + 1 == finalRoute.getItemRoute().size()) {
+                    stepCost = failstackValue - finalRoute.getFailstackRoute().get(i).getValue();
+                }
+            }
+            
+            costBreakdownView.addCostBreakdownWidget(itemUsed,
+                    finalRoute.getFailstackRoute().get(i).getFailstack(),
+                    stepCost);
         }
 
         this.outputLabel.setText("Failstack Value: " + String.format("%,d", failstackValue));
