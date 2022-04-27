@@ -4,16 +4,12 @@ import Model.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class DuoReblaith extends Item {
 
-    private final LowestCostHash lowestCost;
     private ReblaithRoute finalRoute;
 
     public DuoReblaith() {
-        lowestCost = new LowestCostHash();
-
         name = "DUO Reblaith Gloves";
         image = new ImageIcon("duoReblaith.png");
 
@@ -27,7 +23,7 @@ public class DuoReblaith extends Item {
 
     }
 
-    public static Long costToClick(Failstack failstack) {
+    public static long costToClick(Failstack failstack) {
         long concentratedBlackStoneCost = CostTracker.getCost("Concentrated Black Stone (Armor)");
         long repairCost = CostTracker.getCost("Reblaith Gloves");
 
@@ -48,30 +44,9 @@ public class DuoReblaith extends Item {
         return finalRoute;
     }
 
-    private Long calculateValue() {
-        ArrayList<ReblaithRoute> frontier = new ArrayList<>();
-        frontier.add(new ReblaithRoute());
-
-        while(!frontier.isEmpty()){
-            ReblaithRoute currentRoute = frontier.remove(0);
-
-            double currentReblaithCount = currentRoute.getExpectedNumberOfReblaiths();
-            if (currentReblaithCount >= 1.0){
-                finalRoute = currentRoute;
-                return currentRoute.getFailstack().getValue();
-            }
-
-            if (!lowestCost.isCheapest(currentRoute.getFailstack(), currentRoute.getExpectedNumberOfReblaiths())) {
-                continue;
-            }
-
-            ArrayList<ReblaithRoute> newReblaithRoutes = iterate(currentRoute);
-            frontier.addAll(newReblaithRoutes);
-            Collections.sort(frontier);
-        }
-
-        return 0L;
-
+    private long calculateValue() {
+        ReblaithValueCalculator calculator = new ReblaithValueCalculator();
+        return calculator.calculateValue(this::iterate);
     }
 
     private ArrayList<ReblaithRoute> iterate(ReblaithRoute currentReblaithRoute) {
@@ -83,6 +58,7 @@ public class DuoReblaith extends Item {
         return newReblaithRoutes;
     }
 
+    //TODO: How to avoid retyping this same method for TRI, TET, and PEN Reblaith?
     private ReblaithRoute clickReblaith14(ReblaithRoute currentReblaithRoute) {
         ReblaithRoute reblaith14Route = new ReblaithRoute(currentReblaithRoute);
 
