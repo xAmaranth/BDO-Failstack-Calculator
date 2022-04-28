@@ -1,5 +1,8 @@
 package Model;
 
+import Model.Items.PriReblaith;
+import Model.Items.Reblaith14;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -29,6 +32,34 @@ public class ReblaithValueCalculator {
 
         return 0L;
 
+    }
+
+    public ReblaithRoute clickReblaith14(ReblaithRoute currentReblaithRoute) {
+        ReblaithRoute reblaith14Route = new ReblaithRoute(currentReblaithRoute);
+
+        double totalCost = Reblaith14.CostToClick(currentReblaithRoute.getFailstack());
+
+        reblaith14Route.addToRoute(
+                new Failstack(currentReblaithRoute.getFailstack()).increment(1, Math.round(totalCost)),
+                new Reblaith14(),
+                0
+        );
+
+        return reblaith14Route;
+    }
+
+    public ReblaithRoute clickPriReblaith(ReblaithRoute currentReblaithRoute) {
+        ReblaithRoute priReblaithRoute = new ReblaithRoute(currentReblaithRoute);
+
+        double totalCost = PriReblaith.costToClick(currentReblaithRoute.getFailstack());
+
+        priReblaithRoute.addToRoute(
+                new Failstack(currentReblaithRoute.getFailstack()).increment(2, Math.round(totalCost)),
+                new PriReblaith(),
+                0
+        );
+
+        return priReblaithRoute;
     }
 
 }

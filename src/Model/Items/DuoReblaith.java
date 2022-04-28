@@ -8,10 +8,13 @@ import java.util.ArrayList;
 public class DuoReblaith extends Item {
 
     private ReblaithRoute finalRoute;
+    private final ReblaithValueCalculator reblaithValueCalculator;
 
     public DuoReblaith() {
         name = "DUO Reblaith Gloves";
         image = new ImageIcon("duoReblaith.png");
+
+        reblaithValueCalculator = new ReblaithValueCalculator();
 
         //TODO: What if the cost of Black Stones are changed after the cost is first calculated?
         if (CostTracker.hasEntry(name)) {
@@ -45,32 +48,16 @@ public class DuoReblaith extends Item {
     }
 
     private long calculateValue() {
-        ReblaithValueCalculator calculator = new ReblaithValueCalculator();
-        return calculator.calculateValue(this::iterate);
+        return reblaithValueCalculator.calculateValue(this::iterate);
     }
 
     private ArrayList<ReblaithRoute> iterate(ReblaithRoute currentReblaithRoute) {
         ArrayList<ReblaithRoute> newReblaithRoutes = new ArrayList<>();
 
-        newReblaithRoutes.add(clickReblaith14(currentReblaithRoute));
+        newReblaithRoutes.add(reblaithValueCalculator.clickReblaith14(currentReblaithRoute));
         newReblaithRoutes.add(clickPriReblaith(currentReblaithRoute));
 
         return newReblaithRoutes;
-    }
-
-    //TODO: How to avoid retyping this same method for TRI, TET, and PEN Reblaith?
-    private ReblaithRoute clickReblaith14(ReblaithRoute currentReblaithRoute) {
-        ReblaithRoute reblaith14Route = new ReblaithRoute(currentReblaithRoute);
-
-        double totalCost = Reblaith14.CostToClick(currentReblaithRoute.getFailstack());
-
-        reblaith14Route.addToRoute(
-                new Failstack(currentReblaithRoute.getFailstack()).increment(1, Math.round(totalCost)),
-                new Reblaith14(),
-                0
-        );
-
-        return reblaith14Route;
     }
 
     private ReblaithRoute clickPriReblaith(ReblaithRoute currentReblaithRoute) {

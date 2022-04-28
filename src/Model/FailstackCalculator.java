@@ -3,6 +3,7 @@ package Model;
 import Model.Items.DuoReblaith;
 import Model.Items.PriReblaith;
 import Model.Items.Reblaith14;
+import Model.Items.TriReblaith;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -59,6 +60,7 @@ public class FailstackCalculator {
         newEnhancementRoutes.add(clickReblaith14(currentEnhancementRoute));
         newEnhancementRoutes.add(clickPriReblaith(currentEnhancementRoute));
         newEnhancementRoutes.add(clickDuoReblaith(currentEnhancementRoute));
+        newEnhancementRoutes.add(clickTriReblaith(currentEnhancementRoute));
 
         return newEnhancementRoutes;
     }
@@ -84,7 +86,7 @@ public class FailstackCalculator {
         double totalCost = expectedNumberOfClicks * PriReblaith.costToClick(currentEnhancementRoute.getFailstack());
 
         priReblaithRoute.addToRoute(
-                new Failstack(currentEnhancementRoute.getFailstack()).increment(2, Math.round(totalCost)),
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(3, Math.round(totalCost)),
                 new PriReblaith()
         );
 
@@ -99,11 +101,26 @@ public class FailstackCalculator {
         double totalCost = expectedNumberOfClicks * DuoReblaith.costToClick(currentEnhancementRoute.getFailstack());
 
         duoReblaithRoute.addToRoute(
-                new Failstack(currentEnhancementRoute.getFailstack()).increment(3, Math.round(totalCost)),
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(4, Math.round(totalCost)),
                 new DuoReblaith()
         );
 
         return duoReblaithRoute;
+    }
+
+    private EnhancementRoute clickTriReblaith(EnhancementRoute currentEnhancementRoute) {
+        EnhancementRoute triReblaithRoute = new EnhancementRoute(currentEnhancementRoute);
+
+        double chanceOfSuccess = SuccessRateCalculator.getTriToTetRate(currentEnhancementRoute.getFailstack().getFailstack());
+        double expectedNumberOfClicks = 1 / (1 - chanceOfSuccess);
+        double totalCost = expectedNumberOfClicks * TriReblaith.costToClick(currentEnhancementRoute.getFailstack());
+
+        triReblaithRoute.addToRoute(
+                new Failstack(currentEnhancementRoute.getFailstack()).increment(5, Math.round(totalCost)),
+                new TriReblaith()
+        );
+
+        return triReblaithRoute;
     }
 
 }
