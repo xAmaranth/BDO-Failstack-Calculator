@@ -26,4 +26,8 @@ public class SuccessRateCalculator {
             return 0.0625 + (currentFailstack * 0.00625);
         }
     }
+
+    public static double getTriToTetRate(int currentFailstack) {
+        return 0.02 + (currentFailstack * 0.002);
+    }
 }
